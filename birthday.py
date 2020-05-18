@@ -2,11 +2,11 @@ import pandas as pd
 import datetime
 import smtplib
 import os
-os.chdir(r"E:\birthday_wisher")
-os.mkdir("testing")
+os.chdir(r"E:\birthday_wisher") #Schedule the task scheduler to wish on the specified date & give proper file location 
+#os.mkdir("testing")
 #Enter your Authentication details
-GMAIL_ID='lofoproject10@gmail.com'
-GMAIL_PSWD='vyqjxebvraklervt'
+GMAIL_ID=''
+GMAIL_PSWD=''
 def sendMail(to,sub,msg):
     print(f"Email to {to} sent with subj {sub} with msg {msg}")
     s=smtplib.SMTP('smtp.gmail.com',587)
@@ -16,29 +16,20 @@ def sendMail(to,sub,msg):
     s.quit()
 
 if __name__ == "__main__":
-    # sendMail('deepapandey364@gmail.com',"subject","TEst message")
-    # exit()
+    #perform pip install xlrd
     df=pd.read_excel("data.xlsx")
-    #print(df)
     today=datetime.datetime.now().strftime("%d-%m")
     yrNow=datetime.datetime.now().strftime("%Y")
-    #print(type(today))
     writeInd=[]
     for index,items in df.iterrows():
         bday=items['BIRTHDAY'].strftime("%d-%m")
-        #yrNow=items['BIRTHDAY'].strftime("%y")
-        #print(bday)
         if(today==bday) and yrNow not in str(items['YEAR']):
-            #sendMail(items['Email'],"Happy b'day - Deepa",items['DIALOUGE']) 
-            #sendMail('deepapandey364@gmail.com',"Happy b'day - Deepa",items['DIALOUGE']) 
-            # print(items['Email'])
-            # print(items['YEAR'])
+            #sendMail(items['Email'],"Happy b'day - Deepa",items['DIALOUGE'])
             writeInd.append(index)
-    print(writeInd)
-        
+    #To keep a track of already wished b'days on that particular year
     for i in writeInd:
         yr=df.loc[i,'YEAR']
         df.loc[i,'YEAR']=str(yr)+' , '+str(yrNow)
         print(df.loc[i,'YEAR'])
-    #print(df)
+        #perform pip install openpyxl before it
         df.to_excel('data.xlsx',index=False)
